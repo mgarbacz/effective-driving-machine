@@ -1,0 +1,18 @@
+{
+  "name": "effective-driving-machine",
+  "version": "0.0.1",
+  "description": "CodeBullet-inspired driving AI",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mgarbacz/effective-driving-machine.git"
+  },
+  "author": "mgarbacz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mgarbacz/effective-driving-machine/issues"
+  },
+  "homepage": "https://github.com/mgarbacz/effective-driving-machine#readme"
+}
