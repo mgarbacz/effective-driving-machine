@@ -1,7 +1,7 @@
 import Car from './car.js'
 
 export default function(p5) {
-  let car, carSprite;
+  let car, carSprite
 
   // p5 preload
   p5.preload = function() {
