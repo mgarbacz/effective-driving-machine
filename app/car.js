@@ -35,7 +35,7 @@ export default class Car {
         this._move(2.5)
       }
     } else if (this.p5.keyIsDown(S_KEY)) {
-      this._move(-2)
+      this._move(-1)
     } else {
       this._move(0)
     }
