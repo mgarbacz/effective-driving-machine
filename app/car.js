@@ -16,12 +16,18 @@ export default class Car {
 
   // called every draw loop
   display() {
+    // Create new drawing state for car
+    this.p5.push()
+
     this._handleMovementKeys()
     this._handleTurnKeys()
     this._calculateNewAngle()
     this._calculateNewPosition()
     this._translate()
     this._drawCar()
+
+    // End drawing state of car
+    this.p5.pop()
   }
 
   // handle forward and backward movement keys

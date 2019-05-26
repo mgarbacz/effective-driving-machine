@@ -1,8 +1,9 @@
 import Racetrack from './racetrack.js'
 import Car from './car.js'
+import Overlay from './overlay.js'
 
 export default function(p5) {
-  let racetrack, car, carSprite
+  let racetrack, car, carSprite, overlay
 
   // p5 preload
   p5.preload = function() {
@@ -17,6 +18,7 @@ export default function(p5) {
 
     racetrack = new Racetrack(p5)
     car = new Car(550, 100, carSprite, p5)
+    overlay = new Overlay(car, p5)
   }
 
   // p5 draw loop
@@ -24,5 +26,6 @@ export default function(p5) {
     p5.background('#335533')
     racetrack.display()
     car.display()
+    overlay.display()
   }
 }
