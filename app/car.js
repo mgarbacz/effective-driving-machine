@@ -29,9 +29,9 @@ export default class Car {
     if (this.p5.keyIsDown(W_KEY) && this.p5.keyIsDown(S_KEY)) {
       this._move(0)
     } else if (this.p5.keyIsDown(W_KEY)) {
-      this._move(-1)
-    } else if (this.p5.keyIsDown(S_KEY)) {
       this._move(1)
+    } else if (this.p5.keyIsDown(S_KEY)) {
+      this._move(-1)
     } else {
       this._move(0)
     }
@@ -62,8 +62,12 @@ export default class Car {
 
   // calculate new angle, we only turn if moving
   _calculateNewAngle() {
-    if (this.accel) {
+    if (this.accel > 0) {
+      // moving forwards
       this.angle += this.rotation
+    } else if (this.accel < 0) {
+      // moving backwards, opposite turn
+      this.angle -= this.rotation
     }
   }
 
