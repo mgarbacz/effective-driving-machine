@@ -16,7 +16,7 @@ export default class Car {
 
   // called every draw loop
   display() {
-    // Create new car drawing state
+    // Create new drawing state for car
     this.p5.push()
 
     this._handleMovementKeys()
@@ -26,7 +26,7 @@ export default class Car {
     this._translate()
     this._drawCar()
 
-    // End current drawing state
+    // End drawing state of car
     this.p5.pop()
   }
 
