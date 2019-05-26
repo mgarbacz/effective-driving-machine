@@ -14,7 +14,7 @@ export default function(p5) {
     p5.noStroke()
     p5.angleMode(p5.DEGREES)
 
-    car = new Car(10, 22, carSprite, p5)
+    car = new Car(p5.width / 2, p5.height / 2, carSprite, p5)
   }
 
   // p5 draw loop
