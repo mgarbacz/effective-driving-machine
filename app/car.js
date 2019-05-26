@@ -78,12 +78,14 @@ export default class Car {
   }
 
   // translate to new position and rotation
+  // Note: top left corner of car is always rotate point
   _translate() {
     this.p5.translate(this.x, this.y)
     this.p5.rotate(this.angle)
 
     // adjust car to center of its location based on sprite size
     // this is done after the rotation so that rotation is centered on car
+    // and not on the top left corner of the car
     this.p5.translate(-this.width / 2, -this.height / 2)
   }
 
