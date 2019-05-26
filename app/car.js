@@ -10,8 +10,10 @@ export default class Car {
     this.sprite = sprite
     this.width = sprite.width
     this.height = sprite.height
-
     this.p5 = p5
+    this.bounds = {}
+
+    this._calculateBounds()
   }
 
   // called every draw loop
@@ -23,11 +25,29 @@ export default class Car {
     this._handleTurnKeys()
     this._calculateNewAngle()
     this._calculateNewPosition()
+    this._calculateBounds()
     this._translate()
     this._drawCar()
 
     // End drawing state of car
     this.p5.pop()
+  }
+
+  // calculate the bounding box corners for car
+  _calculateBounds() {
+    let sinModX = this.p5.sin(this.angle) * this.height / 2
+    let cosModX = this.p5.cos(this.angle) * this.width / 2
+    let sinModY = this.p5.sin(this.angle) * this.width / 2
+    let cosModY = this.p5.cos(this.angle) * this.height / 2
+
+    this.bounds.topLx = this.x + sinModX - cosModX
+    this.bounds.topLy = this.y - sinModY - cosModY
+    this.bounds.topRx = this.x + sinModX + cosModX
+    this.bounds.topRy = this.y + sinModY - cosModY
+    this.bounds.botLx = this.x - sinModX - cosModX
+    this.bounds.botLy = this.y - sinModY + cosModY
+    this.bounds.botRx = this.x - sinModX + cosModX
+    this.bounds.botRy = this.y + sinModY + cosModY
   }
 
   // handle forward and backward movement keys
