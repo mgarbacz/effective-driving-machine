@@ -14,12 +14,20 @@ export default class Car {
 
   // called every draw loop
   display() {
+    // calcuate movement
     this.angle += this.rotation
     this.x += -this.accel * this.p5.sin(this.angle)
     this.y += this.accel * this.p5.cos(this.angle)
 
-    this.p5.translate(this.x + (this.width / 2), this.y + (this.height / 2))
+    // translate to new position
+    this.p5.translate(this.x, this.y)
+    // calculate the rotation
     this.p5.rotate(this.angle)
+    // adjust car to center of its location based on sprite size
+    // this is done after the rotation so that rotation is centered on car
+    this.p5.translate(-this.width / 2, -this.height / 2)
+
+    // actually draw the car sprite
     this.p5.image(this.sprite, 0, 0)
   }
 
