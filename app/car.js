@@ -12,8 +12,12 @@ export default class Car {
     this.height = sprite.height
     this.p5 = p5
     this.bounds = {}
+    this.sensors = []
 
     this._calculateBounds()
+    this._initializeSensors()
+
+    console.log(this.sensors)
   }
 
   // called every draw loop
@@ -28,6 +32,7 @@ export default class Car {
     this._calculateBounds()
     this._translate()
     this._drawCar()
+    this._drawSensorLines()
 
     // End drawing state of car
     this.p5.pop()
@@ -48,6 +53,30 @@ export default class Car {
     this.bounds.botLy = this.y - sinModY + cosModY
     this.bounds.botRx = this.x - sinModX + cosModX
     this.bounds.botRy = this.y + sinModY + cosModY
+  }
+
+  // create sensor lines
+  _initializeSensors() {
+    // forward line
+    this.sensors.push({ x1: this.width / 2, y1: this.height, x2: this.width / 2, y2: 500 })
+    // forward-right angle line
+    this.sensors.push({ x1: 0, y1: this.height, x2: -100, y2: 500 })
+    // forward-left angle line
+    this.sensors.push({ x1: this.width, y1: this.height, x2: 100, y2: 500 })
+    // front-right line
+    this.sensors.push({ x1: 0, y1: this.height, x2: -500, y2: this.height })
+    // front-right angle line
+    this.sensors.push({ x1: 0, y1: this.height, x2: -500, y2: 500 })
+    // front-left line
+    this.sensors.push({ x1: this.width, y1: this.height, x2: 500, y2: this.height })
+    // front-left angle line
+    this.sensors.push({ x1: this.width, y1: this.height, x2: 500, y2: 500 })
+    // backward line
+    this.sensors.push({ x1: this.width / 2, y1: 0, x2: this.width / 2, y2: -500 })
+    // back-right angle line
+    this.sensors.push({ x1: 0, y1: 0, x2: -500, y2: -500 })
+    // back-left angle line
+    this.sensors.push({ x1: this.width, y1: 0, x2: 500, y2: -500 })
   }
 
   // handle forward and backward movement keys
@@ -127,5 +156,14 @@ export default class Car {
   // actually draw the car sprite
   _drawCar() {
     this.p5.image(this.sprite, 0, 0)
+  }
+
+  // draw sensor lines
+  _drawSensorLines() {
+    this.p5.stroke('#fafafa')
+    this.p5.strokeWeight(1)
+    for (let line of this.sensors) {
+      this.p5.line(line.x1, line.y1, line.x2, line.y2)
+    }
   }
 }
