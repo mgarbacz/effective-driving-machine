@@ -30,6 +30,10 @@ export default class Car {
       this._move(0)
     } else if (this.p5.keyIsDown(W_KEY)) {
       this._move(2)
+      // if not turning, slight bump in speed
+      if (!(this.p5.keyIsDown(A_KEY)) && !(this.p5.keyIsDown(D_KEY))) {
+        this._move(2.5)
+      }
     } else if (this.p5.keyIsDown(S_KEY)) {
       this._move(-2)
     } else {
