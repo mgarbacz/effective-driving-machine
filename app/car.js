@@ -2,19 +2,25 @@ export default class Car {
   constructor(x, y, sprite, p5) {
     this.x = x
     this.y = y
+    this.accel = 0
+    this.angle = 0
+    this.rotation = 0
     this.sprite = sprite
     this.width = sprite.width
     this.height = sprite.height
-    this.accel = p5.createVector(0, 0)
 
     this.p5 = p5
   }
 
   // called every draw loop
   display() {
-    this.x += this.accel.x
-    this.y += this.accel.y
-    this.p5.image(this.sprite, this.x, this.y)
+    this.angle += this.rotation
+    this.x += -this.accel * this.p5.sin(this.angle)
+    this.y += this.accel * this.p5.cos(this.angle)
+
+    this.p5.translate(this.x + (this.width / 2), this.y + (this.height / 2))
+    this.p5.rotate(this.angle)
+    this.p5.image(this.sprite, 0, 0)
   }
 
   // if wasd keys pressed, do some moves
@@ -42,11 +48,11 @@ export default class Car {
 
   // called when movement key pressed or released
   move(direction) {
-    this.accel.y = direction
+    this.accel = direction
   }
 
   // called when turn key pressed or released
   turn(direction) {
-    this.accel.x = direction
+    this.rotation = direction
   }
 }
