@@ -1,3 +1,8 @@
+const W_KEY = 87,
+      A_KEY = 65,
+      S_KEY = 83,
+      D_KEY = 68
+
 export default class Car {
   constructor(x, y, sprite, p5) {
     this.x = x
@@ -14,6 +19,28 @@ export default class Car {
 
   // called every draw loop
   display() {
+    // handle forward and backward movement keys
+    if (this.p5.keyIsDown(W_KEY) && this.p5.keyIsDown(S_KEY)) {
+      this.move(0)
+    } else if (this.p5.keyIsDown(W_KEY)) {
+      this.move(-1)
+    } else if (this.p5.keyIsDown(S_KEY)) {
+      this.move(1)
+    } else {
+      this.move(0)
+    }
+
+    // handle left and right turn keys
+    if (this.p5.keyIsDown(A_KEY) && this.p5.keyIsDown(D_KEY)) {
+      this.turn(0)
+    } else if (this.p5.keyIsDown(A_KEY)) {
+      this.turn(-1)
+    } else if (this.p5.keyIsDown(D_KEY)) {
+      this.turn(1)
+    } else {
+      this.turn(0)
+    }
+
     // calcuate movement
     this.angle += this.rotation
     this.x += -this.accel * this.p5.sin(this.angle)

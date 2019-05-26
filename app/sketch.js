@@ -22,14 +22,4 @@ export default function(p5) {
     p5.background('#333')
     car.display()
   }
-
-  // called on every key press
-  p5.keyPressed = function() {
-    car.handleKeyPress(p5.key)
-  }
-
-  // called on every key release
-  p5.keyReleased = function() {
-    car.handleKeyRelease(p5.key)
-  }
 }
