@@ -5,7 +5,7 @@ export default class Car {
     this.x = x
     this.y = y
     this.accel = 0
-    this.angle = 0
+    this.angle = 270
     this.rotation = 0
     this.sprite = sprite
     this.width = sprite.width
@@ -29,9 +29,9 @@ export default class Car {
     if (this.p5.keyIsDown(W_KEY) && this.p5.keyIsDown(S_KEY)) {
       this._move(0)
     } else if (this.p5.keyIsDown(W_KEY)) {
-      this._move(1)
+      this._move(2)
     } else if (this.p5.keyIsDown(S_KEY)) {
-      this._move(-1)
+      this._move(-2)
     } else {
       this._move(0)
     }
@@ -42,9 +42,9 @@ export default class Car {
     if (this.p5.keyIsDown(A_KEY) && this.p5.keyIsDown(D_KEY)) {
       this._turn(0)
     } else if (this.p5.keyIsDown(A_KEY)) {
-      this._turn(-1)
+      this._turn(-1.5)
     } else if (this.p5.keyIsDown(D_KEY)) {
-      this._turn(1)
+      this._turn(1.5)
     } else {
       this._turn(0)
     }

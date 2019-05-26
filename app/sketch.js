@@ -16,7 +16,7 @@ export default function(p5) {
     p5.angleMode(p5.DEGREES)
 
     racetrack = new Racetrack(p5)
-    car = new Car(p5.width / 2, p5.height / 2, carSprite, p5)
+    car = new Car(550, 100, carSprite, p5)
   }
 
   // p5 draw loop
