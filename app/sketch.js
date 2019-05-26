@@ -1,7 +1,8 @@
+import Racetrack from './racetrack.js'
 import Car from './car.js'
 
 export default function(p5) {
-  let car, carSprite
+  let racetrack, car, carSprite
 
   // p5 preload
   p5.preload = function() {
@@ -10,16 +11,18 @@ export default function(p5) {
 
   // p5 init
   p5.setup = function() {
-    p5.createCanvas(800, 800)
+    p5.createCanvas(1200, 800)
     p5.noStroke()
     p5.angleMode(p5.DEGREES)
 
+    racetrack = new Racetrack(p5)
     car = new Car(p5.width / 2, p5.height / 2, carSprite, p5)
   }
 
   // p5 draw loop
   p5.draw = function() {
-    p5.background('#333')
+    p5.background('#335533')
+    racetrack.display()
     car.display()
   }
 }
