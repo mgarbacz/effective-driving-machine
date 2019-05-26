@@ -32,6 +32,14 @@ export default class Racetrack {
     // End drawing state of racetrack
     this.p5.pop()
   }
+
+  get trackLineOuter() {
+    return trackLineOuter
+  }
+
+  get trackLineInner() {
+    return trackLineInner
+  }
 }
 
 const trackLineOuter = [
