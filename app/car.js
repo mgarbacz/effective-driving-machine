@@ -1,7 +1,4 @@
-const W_KEY = 87,
-      A_KEY = 65,
-      S_KEY = 83,
-      D_KEY = 68
+import {W_KEY, A_KEY, S_KEY, D_KEY} from './keys.js'
 
 export default class Car {
   constructor(x, y, sprite, p5) {
