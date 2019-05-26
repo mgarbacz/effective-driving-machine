@@ -1,8 +1,9 @@
 export default class Overlay {
-  constructor(car, p5) {
+  constructor(car, safety, p5) {
     this.x = 950
     this.y = 400
     this.car = car
+    this.safety = safety
     this.p5 = p5
   }
 
@@ -21,6 +22,18 @@ export default class Overlay {
     this.p5.circle(this.car.bounds.topRx, this.car.bounds.topRy, 5)
     this.p5.circle(this.car.bounds.botLx, this.car.bounds.botLy, 5)
     this.p5.circle(this.car.bounds.botRx, this.car.bounds.botRy, 5)
+
+    // this.p5.circle(this.safety.iX, this.safety.iY, 5)
+
+    if (this.safety.offRoad) {
+      this.p5.fill('rgba(255,0,0,0.8)')
+      this.p5.beginShape()
+      this.p5.vertex(this.car.bounds.topLx, this.car.bounds.topLy)
+      this.p5.vertex(this.car.bounds.topRx, this.car.bounds.topRy)
+      this.p5.vertex(this.car.bounds.botRx, this.car.bounds.botRy)
+      this.p5.vertex(this.car.bounds.botLx, this.car.bounds.botLy)
+      this.p5.endShape(this.p5.CLOSE)
+    }
 
     // End drawing state of overlay
     this.p5.pop()
