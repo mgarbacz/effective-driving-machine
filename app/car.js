@@ -69,6 +69,11 @@ export default class Car {
       // moving backwards, opposite turn
       this.angle -= this.rotation
     }
+
+    // put the angle between -360 and 360 degrees
+    if (this.accel) {
+      this.angle = this.angle % 360
+    }
   }
 
   // calcuate new position based on accel
