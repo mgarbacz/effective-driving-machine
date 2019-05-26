@@ -41,8 +41,11 @@ export default class Car {
       this.turn(0)
     }
 
-    // calcuate movement
-    this.angle += this.rotation
+    // calculate new angle, we only turn if moving
+    if (this.accel) {
+      this.angle += this.rotation
+    }
+    // calcuate new position based on accel
     this.x += -this.accel * this.p5.sin(this.angle)
     this.y += this.accel * this.p5.cos(this.angle)
 
