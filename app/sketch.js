@@ -21,9 +21,6 @@ export default function(p5) {
     car = new Car(550, 100, carSprite, p5)
     safety = new Safety(racetrack.trackLineOuter, racetrack.trackLineInner)
     overlay = new Overlay(car, safety, p5)
-
-    // TODO: ONLY FOR TEST
-    // p5.noLoop()
   }
 
   // p5 draw loop
@@ -32,6 +29,15 @@ export default function(p5) {
     racetrack.display()
     car.display()
     safety.detectCollision(car)
+
+    // TODO better termination
+    if (safety.offRoad) {
+      p5.noLoop()
+      window.setTimeout(function() {
+        p5.setup()
+        p5.loop()
+      }, 2000)
+    }
     overlay.display()
   }
 }
