@@ -8,7 +8,7 @@ export default class Safety {
   detectCollision(car) {
     this.offRoad = this._checkAllCarSides(car)
     this.sensorCollisions = []
-    this._checkAllSensors(car.sensors)
+    this._checkAllSensors(car.x, car.y, car.sensors)
   }
 
   _checkAllCarSides(car) {
@@ -46,20 +46,38 @@ export default class Safety {
     return false
   }
 
-  _checkAllSensors(sensors) {
+  _checkAllSensors(carX, carY, sensors) {
+    let collisionsOuter = [], collisionsInner = [], collisions = []
     for (let sensor of sensors) {
-      this._checkAllTrackLinesSensor(sensor.x1, sensor.y1, sensor.x2, sensor.y2, this.lineOuter)
-      this._checkAllTrackLinesSensor(sensor.x1, sensor.y1, sensor.x2, sensor.y2, this.lineInner)
+      collisionsOuter = this._checkAllTrackLinesSensor(sensor.x1, sensor.y1, sensor.x2, sensor.y2, this.lineOuter)
+      collisionsInner = this._checkAllTrackLinesSensor(sensor.x1, sensor.y1, sensor.x2, sensor.y2, this.lineInner)
+      collisions = collisionsOuter.concat(collisionsInner)
+      this.sensorCollisions.push(this._findClosestCollisions(carX, carY, collisions))
     }
   }
 
   _checkAllTrackLinesSensor(sX1, sY1, sX2, sY2, side) {
+    let collisions = []
     for (let i = 0; i < side.length; i++) {
       let j = (i + 1) % side.length
-      this._willIntersect(sX1, sY1, sX2, sY2,
+      let willIntersect = this._willIntersect(sX1, sY1, sX2, sY2,
         side[i].x, side[i].y,
         side[j].x, side[j].y)
+      if (willIntersect) collisions.push(willIntersect)
     }
+    return collisions
+  }
+
+  _findClosestCollisions(x, y, collisions) {
+    let closest = {}, minDistanceSq = Infinity
+    for (let collision of collisions) {
+      let distanceSq = Math.pow(x - collision.x, 2) + Math.pow(y - collision.y, 2)
+      if (distanceSq < minDistanceSq) {
+        minDistanceSq = distanceSq
+        closest = collision
+      }
+    }
+    return closest
   }
 
   _willIntersect(x1, y1, x2, y2, x3, y3, x4, y4) {
@@ -70,9 +88,8 @@ export default class Safety {
     if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
       let iX = x1 + (uA * (x2-x1))
       let iY = y1 + (uA * (y2-y1))
-      this.sensorCollisions.push({x: iX, y: iY })
 
-      return true
+      return { x: iX, y: iY }
     }
     return false
   }
