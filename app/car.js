@@ -28,7 +28,6 @@ export default class Car {
     this._calculateNewAngle()
     this._calculateNewPosition()
     this._calculateBounds()
-    this._translate()
     this._drawCar()
     this._drawSensorLines()
 
@@ -139,21 +138,22 @@ export default class Car {
     this.y += this.accel * this.p5.cos(this.angle)
   }
 
-  // translate to new position and rotation
-  // Note: top left corner of car is always rotate point
-  _translate() {
+  // actually draw the car sprite
+  _drawCar() {
+    // Create new drawing state for car sprite
+    this.p5.push()
+
+    // Rotate is relative to origin, so we translate to car's position to
+    // rotate relative to that instead
     this.p5.translate(this.x, this.y)
     this.p5.rotate(this.angle)
 
-    // adjust car to center of its location based on sprite size
-    // this is done after the rotation so that rotation is centered on car
-    // and not on the top left corner of the car
-    this.p5.translate(-this.width / 2, -this.height / 2)
-  }
+    // The image needs to be drawn from top left corner, but car x and y
+    // coordinates are centered, so we adjust by half width and height
+    this.p5.image(this.sprite, -this.width / 2, -this.height / 2)
 
-  // actually draw the car sprite
-  _drawCar() {
-    this.p5.image(this.sprite, 0, 0)
+    // End drawing state of car sprite
+    this.p5.pop()
   }
 
   // draw sensor lines
