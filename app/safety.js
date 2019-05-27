@@ -7,6 +7,8 @@ export default class Safety {
 
   detectCollision(car) {
     this.offRoad = this._checkAllCarSides(car)
+    this.sensorCollisions = []
+    this._checkAllSensors(car.sensors)
   }
 
   _checkAllCarSides(car) {
@@ -44,14 +46,32 @@ export default class Safety {
     return false
   }
 
+  _checkAllSensors(sensors) {
+    for (let sensor of sensors) {
+      this._checkAllTrackLinesSensor(sensor.x1, sensor.y1, sensor.x2, sensor.y2, this.lineOuter)
+      this._checkAllTrackLinesSensor(sensor.x1, sensor.y1, sensor.x2, sensor.y2, this.lineInner)
+    }
+  }
+
+  _checkAllTrackLinesSensor(sX1, sY1, sX2, sY2, side) {
+    for (let i = 0; i < side.length; i++) {
+      let j = (i + 1) % side.length
+      this._willIntersect(sX1, sY1, sX2, sY2,
+        side[i].x, side[i].y,
+        side[j].x, side[j].y)
+    }
+  }
+
   _willIntersect(x1, y1, x2, y2, x3, y3, x4, y4) {
     let uA = ((x4-x3) * (y1-y3) - (y4-y3) * (x1-x3)) / ((y4-y3) * (x2-x1) - (x4-x3) * (y2-y1))
 
     let uB = ((x2-x1) * (y1-y3) - (y2-y1) * (x1-x3)) / ((y4-y3) * (x2-x1) - (x4-x3) * (y2-y1))
 
     if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
-      // this.iX = x1 + (uA * (x2-x1))
-      // this.iY = y1 + (uA * (y2-y1))
+      let iX = x1 + (uA * (x2-x1))
+      let iY = y1 + (uA * (y2-y1))
+      this.sensorCollisions.push({x: iX, y: iY })
+
       return true
     }
     return false
