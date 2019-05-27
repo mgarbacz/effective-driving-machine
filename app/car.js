@@ -72,8 +72,22 @@ export default class Car {
       x2: this.bounds.botRx + (500 * this.p5.cos(this.angle)),
       y2: this.bounds.botRy + (500 * this.p5.sin(this.angle))
     })
+
     // front-right angle line
-    this.sensors.push({ x1: 0, y1: this.height, x2: -500, y2: 500 })
+    this.sensors.push({
+      x1: this.bounds.botRx,
+      y1: this.bounds.botRy,
+      x2: this.bounds.botRx + (353 * this.p5.cos(this.angle)) - (353 * this.p5.sin(this.angle)),
+      y2: this.bounds.botRy + (353 * this.p5.sin(this.angle)) + (353 * this.p5.cos(this.angle))
+    })
+
+    // front-right angle-forward line
+    this.sensors.push({
+      x1: this.bounds.botRx,
+      y1: this.bounds.botRy,
+      x2: this.bounds.botRx + (353 * this.p5.cos(this.angle + 30)) - (353 * this.p5.sin(this.angle + 30)),
+      y2: this.bounds.botRy + (353 * this.p5.sin(this.angle + 30)) + (353 * this.p5.cos(this.angle + 30))
+    })
 
     // front-left line
     this.sensors.push({
@@ -82,8 +96,22 @@ export default class Car {
       x2: this.bounds.botLx - (500 * this.p5.cos(this.angle)),
       y2: this.bounds.botLy - (500 * this.p5.sin(this.angle))
     })
+
     // front-left angle line
-    this.sensors.push({ x1: this.width, y1: this.height, x2: 500, y2: 500 })
+    this.sensors.push({
+      x1: this.bounds.botLx,
+      y1: this.bounds.botLy,
+      x2: this.bounds.botLx - (353 * this.p5.cos(this.angle)) - (353 * this.p5.sin(this.angle)),
+      y2: this.bounds.botLy - (353 * this.p5.sin(this.angle)) + (353 * this.p5.cos(this.angle))
+    })
+
+    // front-left angle-forward line
+    this.sensors.push({
+      x1: this.bounds.botLx,
+      y1: this.bounds.botLy,
+      x2: this.bounds.botLx - (353 * this.p5.cos(this.angle - 30)) - (353 * this.p5.sin(this.angle - 30)),
+      y2: this.bounds.botLy - (353 * this.p5.sin(this.angle - 30)) + (353 * this.p5.cos(this.angle - 30))
+    })
 
     // backward line
     this.sensors.push({
@@ -94,9 +122,20 @@ export default class Car {
     })
 
     // back-right angle line
-    this.sensors.push({ x1: 0, y1: 0, x2: -500, y2: -500 })
+    this.sensors.push({
+      x1: this.bounds.topRx,
+      y1: this.bounds.topRy,
+      x2: this.bounds.topRx + (353 * this.p5.cos(this.angle)) + (353 * this.p5.sin(this.angle)),
+      y2: this.bounds.topRy + (353 * this.p5.sin(this.angle)) - (353 * this.p5.cos(this.angle))
+    })
+
     // back-left angle line
-    this.sensors.push({ x1: this.width, y1: 0, x2: 500, y2: -500 })
+    this.sensors.push({
+      x1: this.bounds.topLx,
+      y1: this.bounds.topLy,
+      x2: this.bounds.topLx - (353 * this.p5.cos(this.angle)) + (353 * this.p5.sin(this.angle)),
+      y2: this.bounds.topLy - (353 * this.p5.sin(this.angle)) - (353 * this.p5.cos(this.angle))
+    })
   }
 
   // handle forward and backward movement keys
