@@ -16,8 +16,6 @@ export default class Car {
 
     this._calculateBounds()
     this._initializeSensors()
-
-    console.log(this.sensors)
   }
 
   // called every draw loop
