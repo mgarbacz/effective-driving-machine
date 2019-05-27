@@ -180,7 +180,7 @@ export default class Car {
 
   // calculate new angle, we only turn if moving
   _calculateNewAngle() {
-    if (this.accel >= 0) {
+    if (this.accel > 0) {
       // moving forwards
       this.angle += this.rotation
     } else if (this.accel < 0) {
