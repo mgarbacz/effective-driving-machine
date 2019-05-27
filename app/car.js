@@ -66,11 +66,22 @@ export default class Car {
     })
 
     // front-right line
-    this.sensors.push({ x1: 0, y1: this.height, x2: -500, y2: this.height })
+    this.sensors.push({
+      x1: this.bounds.botRx,
+      y1: this.bounds.botRy,
+      x2: this.bounds.botRx + (500 * this.p5.cos(this.angle)),
+      y2: this.bounds.botRy + (500 * this.p5.sin(this.angle))
+    })
     // front-right angle line
     this.sensors.push({ x1: 0, y1: this.height, x2: -500, y2: 500 })
+
     // front-left line
-    this.sensors.push({ x1: this.width, y1: this.height, x2: 500, y2: this.height })
+    this.sensors.push({
+      x1: this.bounds.botLx,
+      y1: this.bounds.botLy,
+      x2: this.bounds.botLx - (500 * this.p5.cos(this.angle)),
+      y2: this.bounds.botLy - (500 * this.p5.sin(this.angle))
+    })
     // front-left angle line
     this.sensors.push({ x1: this.width, y1: this.height, x2: 500, y2: 500 })
 
@@ -78,8 +89,8 @@ export default class Car {
     this.sensors.push({
       x1: (this.bounds.topLx + this.bounds.topRx) / 2,
       y1: (this.bounds.topLy + this.bounds.topRy) / 2,
-      x2: (this.bounds.topLx + this.bounds.topRx) / 2 + (-500 * -this.p5.sin(this.angle)),
-      y2: (this.bounds.topLy + this.bounds.topRy) / 2 + (-500 * this.p5.cos(this.angle))
+      x2: (this.bounds.topLx + this.bounds.topRx) / 2 - (500 * -this.p5.sin(this.angle)),
+      y2: (this.bounds.topLy + this.bounds.topRy) / 2 - (500 * this.p5.cos(this.angle))
     })
 
     // back-right angle line
