@@ -15,7 +15,7 @@ export default class Car {
     this.sensors = []
 
     this._calculateBounds()
-    this._initializeSensors()
+    this._calculateSensors()
   }
 
   // called every draw loop
@@ -28,6 +28,7 @@ export default class Car {
     this._calculateNewAngle()
     this._calculateNewPosition()
     this._calculateBounds()
+    this._calculateSensors()
     this._drawCar()
     this._drawSensorLines()
 
@@ -37,10 +38,10 @@ export default class Car {
 
   // calculate the bounding box corners for car
   _calculateBounds() {
-    let sinModX = this.p5.sin(this.angle) * this.height / 2
-    let cosModX = this.p5.cos(this.angle) * this.width / 2
-    let sinModY = this.p5.sin(this.angle) * this.width / 2
-    let cosModY = this.p5.cos(this.angle) * this.height / 2
+    const sinModX = this.p5.sin(this.angle) * this.height / 2
+    const cosModX = this.p5.cos(this.angle) * this.width / 2
+    const sinModY = this.p5.sin(this.angle) * this.width / 2
+    const cosModY = this.p5.cos(this.angle) * this.height / 2
 
     this.bounds.topLx = this.x + sinModX - cosModX
     this.bounds.topLy = this.y - sinModY - cosModY
@@ -53,13 +54,17 @@ export default class Car {
   }
 
   // create sensor lines
-  _initializeSensors() {
+  _calculateSensors() {
+    this.sensors = []
+
     // forward line
-    this.sensors.push({ x1: this.width / 2, y1: this.height, x2: this.width / 2, y2: 500 })
-    // forward-right angle line
-    this.sensors.push({ x1: 0, y1: this.height, x2: -100, y2: 500 })
-    // forward-left angle line
-    this.sensors.push({ x1: this.width, y1: this.height, x2: 100, y2: 500 })
+    this.sensors.push({
+      x1: (this.bounds.botLx + this.bounds.botRx) / 2,
+      y1: (this.bounds.botLy + this.bounds.botRy) / 2,
+      x2: (this.bounds.botLx + this.bounds.botRx) / 2 + (500 * -this.p5.sin(this.angle)),
+      y2: (this.bounds.botLy + this.bounds.botRy) / 2 + (500 * this.p5.cos(this.angle))
+    })
+
     // front-right line
     this.sensors.push({ x1: 0, y1: this.height, x2: -500, y2: this.height })
     // front-right angle line
@@ -68,8 +73,15 @@ export default class Car {
     this.sensors.push({ x1: this.width, y1: this.height, x2: 500, y2: this.height })
     // front-left angle line
     this.sensors.push({ x1: this.width, y1: this.height, x2: 500, y2: 500 })
+
     // backward line
-    this.sensors.push({ x1: this.width / 2, y1: 0, x2: this.width / 2, y2: -500 })
+    this.sensors.push({
+      x1: (this.bounds.topLx + this.bounds.topRx) / 2,
+      y1: (this.bounds.topLy + this.bounds.topRy) / 2,
+      x2: (this.bounds.topLx + this.bounds.topRx) / 2 + (-500 * -this.p5.sin(this.angle)),
+      y2: (this.bounds.topLy + this.bounds.topRy) / 2 + (-500 * this.p5.cos(this.angle))
+    })
+
     // back-right angle line
     this.sensors.push({ x1: 0, y1: 0, x2: -500, y2: -500 })
     // back-left angle line
@@ -118,7 +130,7 @@ export default class Car {
 
   // calculate new angle, we only turn if moving
   _calculateNewAngle() {
-    if (this.accel > 0) {
+    if (this.accel >= 0) {
       // moving forwards
       this.angle += this.rotation
     } else if (this.accel < 0) {
