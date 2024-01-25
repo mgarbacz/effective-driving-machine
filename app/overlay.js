@@ -18,10 +18,6 @@ export default class Overlay {
     this.p5.text(`Car Y: ${this.car.y}`, this.x, this.y + 60)
 
     this.p5.fill(255)
-    // this.p5.circle(this.car.bounds.topLx, this.car.bounds.topLy, 5)
-    // this.p5.circle(this.car.bounds.topRx, this.car.bounds.topRy, 5)
-    // this.p5.circle(this.car.bounds.botLx, this.car.bounds.botLy, 5)
-    // this.p5.circle(this.car.bounds.botRx, this.car.bounds.botRy, 5)
 
     for (let sensorCollision of this.safety.sensorCollisions) {
       this.p5.circle(sensorCollision.x, sensorCollision.y, 5)
