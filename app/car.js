@@ -10,8 +10,12 @@ export default class Car {
     this.sprite = sprite
     this.width = sprite.width
     this.height = sprite.height
-
     this.p5 = p5
+    this.bounds = {}
+    this.sensors = []
+
+    this._calculateBounds()
+    this._calculateSensors()
   }
 
   // called every draw loop
@@ -23,11 +27,115 @@ export default class Car {
     this._handleTurnKeys()
     this._calculateNewAngle()
     this._calculateNewPosition()
-    this._translate()
+    this._calculateBounds()
+    this._calculateSensors()
     this._drawCar()
+    this._drawSensorLines()
 
     // End drawing state of car
     this.p5.pop()
+  }
+
+  // calculate the bounding box corners for car
+  _calculateBounds() {
+    const sinModX = this.p5.sin(this.angle) * this.height / 2
+    const cosModX = this.p5.cos(this.angle) * this.width / 2
+    const sinModY = this.p5.sin(this.angle) * this.width / 2
+    const cosModY = this.p5.cos(this.angle) * this.height / 2
+
+    this.bounds.topLx = this.x + sinModX - cosModX
+    this.bounds.topLy = this.y - sinModY - cosModY
+    this.bounds.topRx = this.x + sinModX + cosModX
+    this.bounds.topRy = this.y + sinModY - cosModY
+    this.bounds.botLx = this.x - sinModX - cosModX
+    this.bounds.botLy = this.y - sinModY + cosModY
+    this.bounds.botRx = this.x - sinModX + cosModX
+    this.bounds.botRy = this.y + sinModY + cosModY
+  }
+
+  // create sensor lines
+  _calculateSensors() {
+    this.sensors = []
+
+    // forward line
+    this.sensors.push({
+      x1: (this.bounds.botLx + this.bounds.botRx) / 2,
+      y1: (this.bounds.botLy + this.bounds.botRy) / 2,
+      x2: (this.bounds.botLx + this.bounds.botRx) / 2 + (500 * -this.p5.sin(this.angle)),
+      y2: (this.bounds.botLy + this.bounds.botRy) / 2 + (500 * this.p5.cos(this.angle))
+    })
+
+    // front-right line
+    this.sensors.push({
+      x1: this.bounds.botRx,
+      y1: this.bounds.botRy,
+      x2: this.bounds.botRx + (500 * this.p5.cos(this.angle)),
+      y2: this.bounds.botRy + (500 * this.p5.sin(this.angle))
+    })
+
+    // front-right angle line
+    this.sensors.push({
+      x1: this.bounds.botRx,
+      y1: this.bounds.botRy,
+      x2: this.bounds.botRx + (353 * this.p5.cos(this.angle)) - (353 * this.p5.sin(this.angle)),
+      y2: this.bounds.botRy + (353 * this.p5.sin(this.angle)) + (353 * this.p5.cos(this.angle))
+    })
+
+    // front-right angle-forward line
+    this.sensors.push({
+      x1: this.bounds.botRx,
+      y1: this.bounds.botRy,
+      x2: this.bounds.botRx + (353 * this.p5.cos(this.angle + 30)) - (353 * this.p5.sin(this.angle + 30)),
+      y2: this.bounds.botRy + (353 * this.p5.sin(this.angle + 30)) + (353 * this.p5.cos(this.angle + 30))
+    })
+
+    // front-left line
+    this.sensors.push({
+      x1: this.bounds.botLx,
+      y1: this.bounds.botLy,
+      x2: this.bounds.botLx - (500 * this.p5.cos(this.angle)),
+      y2: this.bounds.botLy - (500 * this.p5.sin(this.angle))
+    })
+
+    // front-left angle line
+    this.sensors.push({
+      x1: this.bounds.botLx,
+      y1: this.bounds.botLy,
+      x2: this.bounds.botLx - (353 * this.p5.cos(this.angle)) - (353 * this.p5.sin(this.angle)),
+      y2: this.bounds.botLy - (353 * this.p5.sin(this.angle)) + (353 * this.p5.cos(this.angle))
+    })
+
+    // front-left angle-forward line
+    this.sensors.push({
+      x1: this.bounds.botLx,
+      y1: this.bounds.botLy,
+      x2: this.bounds.botLx - (353 * this.p5.cos(this.angle - 30)) - (353 * this.p5.sin(this.angle - 30)),
+      y2: this.bounds.botLy - (353 * this.p5.sin(this.angle - 30)) + (353 * this.p5.cos(this.angle - 30))
+    })
+
+    // backward line
+    this.sensors.push({
+      x1: (this.bounds.topLx + this.bounds.topRx) / 2,
+      y1: (this.bounds.topLy + this.bounds.topRy) / 2,
+      x2: (this.bounds.topLx + this.bounds.topRx) / 2 - (500 * -this.p5.sin(this.angle)),
+      y2: (this.bounds.topLy + this.bounds.topRy) / 2 - (500 * this.p5.cos(this.angle))
+    })
+
+    // back-right angle line
+    this.sensors.push({
+      x1: this.bounds.topRx,
+      y1: this.bounds.topRy,
+      x2: this.bounds.topRx + (353 * this.p5.cos(this.angle)) + (353 * this.p5.sin(this.angle)),
+      y2: this.bounds.topRy + (353 * this.p5.sin(this.angle)) - (353 * this.p5.cos(this.angle))
+    })
+
+    // back-left angle line
+    this.sensors.push({
+      x1: this.bounds.topLx,
+      y1: this.bounds.topLy,
+      x2: this.bounds.topLx - (353 * this.p5.cos(this.angle)) + (353 * this.p5.sin(this.angle)),
+      y2: this.bounds.topLy - (353 * this.p5.sin(this.angle)) - (353 * this.p5.cos(this.angle))
+    })
   }
 
   // handle forward and backward movement keys
@@ -92,20 +200,30 @@ export default class Car {
     this.y += this.accel * this.p5.cos(this.angle)
   }
 
-  // translate to new position and rotation
-  // Note: top left corner of car is always rotate point
-  _translate() {
+  // actually draw the car sprite
+  _drawCar() {
+    // Create new drawing state for car sprite
+    this.p5.push()
+
+    // Rotate is relative to origin, so we translate to car's position to
+    // rotate relative to that instead
     this.p5.translate(this.x, this.y)
     this.p5.rotate(this.angle)
 
-    // adjust car to center of its location based on sprite size
-    // this is done after the rotation so that rotation is centered on car
-    // and not on the top left corner of the car
-    this.p5.translate(-this.width / 2, -this.height / 2)
+    // The image needs to be drawn from top left corner, but car x and y
+    // coordinates are centered, so we adjust by half width and height
+    this.p5.image(this.sprite, -this.width / 2, -this.height / 2)
+
+    // End drawing state of car sprite
+    this.p5.pop()
   }
 
-  // actually draw the car sprite
-  _drawCar() {
-    this.p5.image(this.sprite, 0, 0)
+  // draw sensor lines
+  _drawSensorLines() {
+    this.p5.stroke('#fafafa')
+    this.p5.strokeWeight(1)
+    for (let line of this.sensors) {
+      this.p5.line(line.x1, line.y1, line.x2, line.y2)
+    }
   }
 }

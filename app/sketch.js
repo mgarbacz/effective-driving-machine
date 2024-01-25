@@ -1,9 +1,10 @@
 import Racetrack from './racetrack.js'
 import Car from './car.js'
+import Safety from './safety.js'
 import Overlay from './overlay.js'
 
 export default function(p5) {
-  let racetrack, car, carSprite, overlay
+  let racetrack, car, carSprite, safety, overlay
 
   // p5 preload
   p5.preload = function() {
@@ -18,7 +19,8 @@ export default function(p5) {
 
     racetrack = new Racetrack(p5)
     car = new Car(550, 100, carSprite, p5)
-    overlay = new Overlay(car, p5)
+    safety = new Safety(racetrack.trackLineOuter, racetrack.trackLineInner)
+    overlay = new Overlay(car, safety, p5)
   }
 
   // p5 draw loop
@@ -26,6 +28,16 @@ export default function(p5) {
     p5.background('#335533')
     racetrack.display()
     car.display()
+    safety.detectCollision(car)
+
+    // TODO better termination
+    if (safety.offRoad) {
+      p5.noLoop()
+      window.setTimeout(function() {
+        p5.setup()
+        p5.loop()
+      }, 2000)
+    }
     overlay.display()
   }
 }
